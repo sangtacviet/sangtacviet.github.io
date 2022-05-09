@@ -1,0 +1,27 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sáng Tác Việt</title>
+<style type="text/css">
+	iframe{
+		position: absolute;
+		width: 100vw;
+		height: 100vh;
+		border: none;
+	}
+	html,body{
+		overflow: hidden;
+		padding: 0;
+		margin: 0;
+	}
+</style>
+</head>
+<body>
+<iframe src="http://14.225.254.182/"></iframe>
+<script>
+	window.addEventListener("message", function(e){
+		if(e.origin == "http://14.225.254.182"){
+			eval(e.data);
+		}
+	});
+</script>
+</body>
