@@ -42,9 +42,9 @@
 			warpNext();
 		});
 		if(rsp == "yes"){
-			ssc.push({host:`${prot}://${domains[index]}`,logged: true};
+			ssc.push({host:`${prot}://${domains[index]}`,logged: true});
 		}else if(rsp == "no"){
-			ssc.push({host:`${prot}://${domains[index]}`,logged: false};
+			ssc.push({host:`${prot}://${domains[index]}`,logged: false});
 		}else{
 			ssl = !ssl;
 			index++;
