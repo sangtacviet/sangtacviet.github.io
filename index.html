@@ -80,7 +80,7 @@
                 portal(pass[0].host);
 			}else{
 				//location.href = ssc[0].host + (location.pathname || location.path);
-                portal(pass[0].host);
+                portal(ssc[0].host);
 			}
 			return;
 		}
@@ -109,7 +109,7 @@
     }
     function goto(){
         var btn=event.target;
-        var url = btn.prevElementSibling.textContent;
+        var url = "https://"+btn.previousElementSibling.textContent;
         location.href = url;
     }
     function noSite(){
