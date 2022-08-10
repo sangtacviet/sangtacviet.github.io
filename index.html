@@ -1,6 +1,6 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sáng Tác Việt</title>
+<title>STV Portal</title>
 <style type="text/css">
 	iframe{
 		position: absolute;
@@ -10,9 +10,16 @@
 	}
 	html,body{
 		overflow: hidden;
-		padding: 0;
+		padding: 20px;
 		margin: 0;
+        background-color: rgb(239, 247, 255);
 	}
+    .block{
+        display: flex;
+        background-color: rgb(224, 224, 224);
+        border-radius: 12px;
+        border: 1px solid rgb(211, 211, 211);
+    }
 </style>
 </head>
 <body>
@@ -21,8 +28,33 @@
 	var ssl = false;
 	var index = 0;
 	var ssc = [];
+    async function httpRequest(url){
+        return new Promise((resolve, reject) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4){
+                    if(xhr.status == 200){
+                        resolve(xhr.responseText);
+                    }else{
+                        reject(xhr.status);
+                    }
+                }
+            }
+            xhr.withCredentials = true;
+            xhr.send();
+        });
+    }
+    function nextParam(){
+        ssl = !ssl;
+        if(!ssl)
+        index++;
+        warpNext();
+    }
 	async function warpNext(){
 		if(!domains[index]){
+            alert(ssc.join());
+            return;
 			if(ssc.length == 0){
 				return noSite();
 			}
@@ -36,20 +68,23 @@
 		}
 		var prot = ssl ? "https" : "http";
 		var warpUrl = `${prot}://${domains[index]}/warp.php`;
-		var rsp = await fetch(warpUrl,{credentials: 'include'}).catch(err=>{
-			ssl = !ssl;
-			index++;
-			warpNext();
-		});
+		var rsp = await httpRequest(warpUrl).catch(e=>{
+            //nextParam();
+        });
 		if(rsp == "yes"){
+            console.log(`${warpUrl} logged in`);
 			ssc.push({host:`${prot}://${domains[index]}`,logged: true});
 		}else if(rsp == "no"){
+            console.log(`${warpUrl} not logged in`);
 			ssc.push({host:`${prot}://${domains[index]}`,logged: false});
 		}else{
-			ssl = !ssl;
-			index++;
-			warpNext();
+			nextParam();
 		}
 	}
+    function reset(){
+        ssc = [];
+        index = 0;
+        ssl = false;
+    }
 </script>
 </body>
