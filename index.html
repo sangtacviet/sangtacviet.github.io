@@ -15,6 +15,7 @@
         background-color: rgb(239, 247, 255);
 	}
     .block{
+        margin-top: 12px;
         display: flex;
         background-color: rgb(252, 252, 252);
         border-radius: 12px;
@@ -75,9 +76,11 @@
 			}
 			var pass = ssc.filter(obj => obj.logged);
 			if(pass.length > 0){
-				location.href = pass[0].host + (location.pathname || location.path);
+				//location.href = pass[0].host + (location.pathname || location.path);
+                portal(pass[0].host);
 			}else{
-				location.href = ssc[0].host + (location.pathname || location.path);
+				//location.href = ssc[0].host + (location.pathname || location.path);
+                portal(pass[0].host);
 			}
 			return;
 		}
@@ -88,10 +91,13 @@
         });
 		if(rsp == "yes"){
             console.log(`${warpUrl} logged in`);
-			ssc.push({host:`${prot}://${domains[index]}`,logged: true});
+            var host = `${prot}://${domains[index]}`;
+			ssc.push({host:`${host}`,logged: true});
+            portal(host);
 		}else if(rsp == "no"){
             console.log(`${warpUrl} not logged in`);
 			ssc.push({host:`${prot}://${domains[index]}`,logged: false});
+            nextParam();
 		}else{
 			nextParam();
 		}
@@ -114,6 +120,12 @@
         block.appendChild(h4);
         document.body.appendChild(block);
     }
+    function portal(host){
+        var path = location.pathname || location.path;
+        if(path != "/" || path != ""){
+            location.href = host + path;
+        }
+    }
 </script>
     <div>
         <div class="block">
@@ -121,7 +133,8 @@
             <button onclick="goto()">GO</button>
         </div>
         <div class="block">
-            <iframe src="http://sangtacviet.pro/warp.php"></iframe>
+            <h4>sangtacviet.pro</h4>
+            <button onclick="goto()">GO</button>
         </div>
     </div>
 </body>
