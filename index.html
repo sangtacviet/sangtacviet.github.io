@@ -122,9 +122,17 @@
     }
     function portal(host){
         var path = location.pathname || location.path;
-        if(path != "/" || path != ""){
+        if((path != "/" && path != "") || window.isautowarp){
             location.href = host + path;
         }
+    }
+    function autowarp(){
+        window.isautowarp = true;
+        warpNext();
+    }
+    var pathorg = location.pathname || location.path;
+    if(path != "/" && path != ""){
+        autowarp();
     }
 </script>
     <div>
@@ -137,4 +145,9 @@
             <button onclick="goto()">GO</button>
         </div>
     </div>
+    <br><br>
+    <center>
+        <button onclick="autowarp()">Bỏ qua</button>
+    </center>
+
 </body>
