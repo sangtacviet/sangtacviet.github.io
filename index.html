@@ -111,12 +111,14 @@
         }
         function portal(host){
             var path = location.pathname || location.path;
-            if((path != "/" && path != "") || window.isautowarp){
+            if((path != "/" && path != "") || window.isAutoWarp){
                 location.href = host + path;
+            }else{
+                location = host;
             }
         }
         function autowarp(){
-            window.isautowarp = true;
+            window.isAutoWarp = true;
             warpNext();
         }
         var pathorg = location.pathname || location.path;
