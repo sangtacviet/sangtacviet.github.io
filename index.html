@@ -119,23 +119,59 @@
             warpNext();
         }
         var pathorg = location.pathname || location.path;
-        if(path != "/" && path != ""){
+        if(pathorg != "/" && pathorg != ""){
             autowarp();
         }
     </script>
-        <div>
-            <div class="block">
-                <h4>sangtacviet.com</h4>
-                <button onclick="goto()">GO</button>
-            </div>
-            <div class="block">
-                <h4>sangtacviet.pro</h4>
-                <button onclick="goto()">GO</button>
-            </div>
-        </div>
+        <div id="cont"></div>
         <br><br>
         <center>
             <button onclick="autowarp()">Bỏ qua</button>
         </center>
-    
+        <script>
+            function createBlock(domain){
+                var block = document.createElement("div");
+                block.className = "block";
+                var h4 = document.createElement("h4");
+                h4.innerHTML = domain;
+                block.appendChild(h4);
+                var btn = document.createElement("button");
+                btn.innerHTML = "GO";
+                btn.onclick = goto;
+                block.appendChild(btn);
+                return block;
+            }
+            function getDomainList(calb){
+                var githuburl = "https://raw.githubusercontent.com/sangtacviet/sangtacviet.github.io/main/portal.json";
+                httpRequest(githuburl).then(function(res){
+                    var json = JSON.parse(res);
+                    calb(json);
+                }).catch(function(err){
+                    calb([]);
+                });
+            }
+            function checkIsDomainAccessible(domain){
+                var host = "https://" + domain;
+                var file = "/warp.php";
+                var url = host + file;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", url, true);
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200){
+                            var block = createBlock(domain);
+                            document.getElementById("cont").appendChild(block);
+                        }
+                    }
+                }
+                xhr.withCredentials = true;
+                xhr.send();
+            }
+            getDomainList(function(domains){
+                for(var i = 0; i < domains.length; i++){
+                    var domain = domains[i];
+                    checkIsDomainAccessible(domain);
+                }
+            });
+        </script>
     </body>
