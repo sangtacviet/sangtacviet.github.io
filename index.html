@@ -1,6 +1,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>STV Portal</title>
+    <meta charset="utf-8">
     <style type="text/css">
         iframe{
             position: absolute;
@@ -53,6 +54,7 @@
                 xhr.onreadystatechange = function(){
                     if(xhr.readyState == 4){
                         if(xhr.status == 200){
+                            console.log(xhr.responseText);
                             resolve(xhr.responseText);
                         }else{
                             reject(xhr.status);
@@ -96,7 +98,7 @@
         }
         function goto(){
             var btn=event.target;
-            var url = "https://"+btn.previousElementSibling.textContent;
+            var url = btn.previousElementSibling.textContent;
             location.href = url;
         }
         function noSite(){
@@ -119,16 +121,17 @@
         }
         var pathorg = location.pathname || location.path;
         if(pathorg != "/" && pathorg != ""){
-            autowarp();
+            window.isDelay = true;
         }
+        window.isAutoWarp = true;
     </script>
         <div id="cont"></div>
         <br><br>
         <center>
-            <button onclick="autowarp()">Bỏ qua</button>
+            <button onclick="skip()">Bỏ qua</button>
         </center>
         <script>
-            function createBlock(domain){
+            function createBlock(domain, hasAccount){
                 var block = document.createElement("div");
                 block.className = "block";
                 var h4 = document.createElement("h4");
@@ -138,18 +141,27 @@
                 btn.innerHTML = "GO";
                 btn.onclick = goto;
                 block.appendChild(btn);
+                if(hasAccount){
+                    var h4 = document.createElement("h5");
+                    h4.innerHTML = "Đã có tài khoản";
+                    block.appendChild(h4);
+                }
                 return block;
             }
             function getDomainList(calb){
                 var githuburl = "https://raw.githubusercontent.com/sangtacviet/sangtacviet.github.io/main/portal.json";
                 httpRequest(githuburl).then(function(res){
+                    console.log(res);
+                    res = res.replace(/;/g, '');
                     var json = JSON.parse(res);
+                    console.log(json);
                     calb(json);
                 }).catch(function(err){
+                    console.log(err);
                     calb([]);
                 });
             }
-            function checkIsDomainAccessible(domain){
+            function checkIsDomainAccessible(domain,place){
                 var host = domain;
                 var file = "/warp.php";
                 var url = host + file;
@@ -158,18 +170,63 @@
                 xhr.onreadystatechange = function(){
                     if(xhr.readyState == 4){
                         if(xhr.status == 200){
-                            var block = createBlock(domain);
-                            document.getElementById("cont").appendChild(block);
+                            var hasAccount = xhr.responseText == "yes";
+                            var block = createBlock(domain,hasAccount);
+                            var cont = document.querySelector("#cont");
+                            cont.appendChild(block);
+                            block.dataset.place = place;
+                        }
+                        checkedCount++;
+                        if(checkedCount == dmList.length){
+                            onChecked();
                         }
                     }
                 }
+                xhr.withCredentials = true;
                 xhr.send();
             }
+            var dmList = null;
+            var checkedCount = 0;
             getDomainList(function(domains){
                 for(var i = 0; i < domains.length; i++){
                     var domain = domains[i];
-                    checkIsDomainAccessible(domain);
+                    checkIsDomainAccessible(domain,i);
                 }
+                dmList = domains;
             });
+            function skip(){
+                var firstBlock = document.querySelector(".block");
+                if(firstBlock){
+                    var url = firstBlock.querySelector("h4").textContent;
+                }
+                url = url.replace("index.html", "");
+                portal(url);
+            }
+            function organizeBlockPlace(){
+                var blocks = document.querySelectorAll(".block");
+                var cont = document.querySelector("#cont");
+                for(var i = 0; i < blocks.length; i++){
+                    var block = blocks[i];
+                    var place = block.dataset.place;
+                    if(place != i){
+                        cont.appendChild(block);
+                    }
+                }
+            }
+            function onChecked(){
+                var blocks = document.querySelectorAll(".block");
+                if(blocks.length == 0){
+                    noSite();
+                    return;
+                }
+                if(window.isDelay){
+                    setTimeout(function(){
+                        skip();
+                    }, 5000);
+                }
+                else{
+                    skip();
+                }
+            }
         </script>
     </body>
