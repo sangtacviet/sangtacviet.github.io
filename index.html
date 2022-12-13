@@ -1,153 +1,141 @@
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>STV Portal</title>
-<style type="text/css">
-	iframe{
-		position: absolute;
-		width: 100vw;
-		height: 100vh;
-		border: none;
-	}
-	html,body{
-		overflow: hidden;
-		padding: 20px;
-		margin: 0;
-        background-color: rgb(239, 247, 255);
-	}
-    .block{
-        margin-top: 12px;
-        display: flex;
-        background-color: rgb(252, 252, 252);
-        border-radius: 12px;
-        border: 1px solid rgb(211, 211, 211);
-        padding: 10px;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    .block h4{
-        flex: 1;
-    }
-    button{
-        outline: none;
-        border: none;
-        background: rgb(77,255,252);
-        background: linear-gradient(0deg, rgba(77,255,252,1) 0%, rgba(251,71,255,1) 100%);
-        padding: 10px 34px;
-        border-radius: 6px;
-        color: white;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        font-size: 20px;
-        font-weight: bold;
-    }
-</style>
-</head>
-<body>
-<script>
-	var domains = ["sangtacviet.com","sangtacviet.pro"];
-	var ssl = false;
-	var index = 0;
-	var ssc = [];
-    async function httpRequest(url){
-        return new Promise((resolve, reject) => {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState == 4){
-                    if(xhr.status == 200){
-                        resolve(xhr.responseText);
-                    }else{
-                        reject(xhr.status);
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>STV Portal</title>
+    <style type="text/css">
+        iframe{
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+        html,body{
+            overflow: hidden;
+            padding: 20px;
+            margin: 0;
+            background-color: rgb(239, 247, 255);
+        }
+        .block{
+            margin-top: 12px;
+            display: flex;
+            background-color: rgb(252, 252, 252);
+            border-radius: 12px;
+            border: 1px solid rgb(211, 211, 211);
+            padding: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .block h4{
+            flex: 1;
+        }
+        button{
+            outline: none;
+            border: none;
+            background: rgb(77,255,252);
+            background: linear-gradient(0deg, rgba(77,255,252,1) 0%, rgba(251,71,255,1) 100%);
+            padding: 10px 34px;
+            border-radius: 6px;
+            color: white;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    </head>
+    <body>
+    <script>
+        var domains = ["sangtacviet.com","sangtacviet.pro","sangtacvietfpt.com"];
+        var ssl = false;
+        var index = 0;
+        var ssc = [];
+        async function httpRequest(url){
+            return new Promise((resolve, reject) => {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", url, true);
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200){
+                            resolve(xhr.responseText);
+                        }else{
+                            reject(xhr.status);
+                        }
                     }
                 }
-            }
-            xhr.withCredentials = true;
-            xhr.send();
-        });
-    }
-    function nextParam(){
-        ssl = !ssl;
-        if(!ssl)
-        index++;
-        warpNext();
-    }
-	async function warpNext(){
-		if(!domains[index]){
-			if(ssc.length == 0){
-				return noSite();
-			}
-			var pass = ssc.filter(obj => obj.logged);
-			if(pass.length > 0){
-				//location.href = pass[0].host + (location.pathname || location.path);
-                portal(pass[0].host);
-			}else{
-				//location.href = ssc[0].host + (location.pathname || location.path);
-                portal(ssc[0].host);
-			}
-			return;
-		}
-		var prot = ssl ? "https" : "http";
-		var warpUrl = `${prot}://${domains[index]}/warp.php`;
-		var rsp = await httpRequest(warpUrl).catch(e=>{
-            nextParam();
-        });
-		if(rsp == "yes"){
-            console.log(`${warpUrl} logged in`);
-            var host = `${prot}://${domains[index]}`;
-			ssc.push({host:`${host}`,logged: true});
-            portal(host);
-		}else if(rsp == "no"){
-            console.log(`${warpUrl} not logged in`);
-			ssc.push({host:`${prot}://${domains[index]}`,logged: false});
-            nextParam();
-		}else{
-			nextParam();
-		}
-	}
-    function reset(){
-        ssc = [];
-        index = 0;
-        ssl = false;
-    }
-    function goto(){
-        var btn=event.target;
-        var url = "https://"+btn.previousElementSibling.textContent;
-        location.href = url;
-    }
-    function noSite(){
-        var block = document.createElement("div");
-        block.className = "block";
-        var h4 = document.createElement("h4");
-        h4.innerHTML = "Oops, nhà mạng của bạn đã chặn hết các miền của web rồi~";
-        block.appendChild(h4);
-        document.body.appendChild(block);
-    }
-    function portal(host){
-        var path = location.pathname || location.path;
-        if((path != "/" && path != "") || window.isautowarp){
-            location.href = host + path;
+                xhr.withCredentials = true;
+                xhr.send();
+            });
         }
-    }
-    function autowarp(){
-        window.isautowarp = true;
-        warpNext();
-    }
-    var pathorg = location.pathname || location.path;
-    if(path != "/" && path != ""){
-        autowarp();
-    }
-</script>
-    <div>
-        <div class="block">
-            <h4>sangtacviet.com</h4>
-            <button onclick="goto()">GO</button>
+        function nextParam(){
+            ssl = !ssl;
+            if(!ssl)
+            index++;
+            warpNext();
+        }
+        async function warpNext(){
+            // test all domain and break when response is yes
+            if(index >= domains.length){
+                noSite();
+                return;
+            }
+            var domain = domains[index];
+            var host = (ssl ? "https://" : "http://") + domain;
+            var path = location.pathname || location.path;
+            var url = host + path;
+            var iframe = document.createElement("iframe");
+            iframe.onload = function(){
+                // is success
+                portal(host);
+            }
+            iframe.onerror = function(){
+                // is fail
+                nextParam();
+                iframe.remove();
+            }
+        }
+        function reset(){
+            ssc = [];
+            index = 0;
+            ssl = false;
+        }
+        function goto(){
+            var btn=event.target;
+            var url = "https://"+btn.previousElementSibling.textContent;
+            location.href = url;
+        }
+        function noSite(){
+            var block = document.createElement("div");
+            block.className = "block";
+            var h4 = document.createElement("h4");
+            h4.innerHTML = "Oops, nhà mạng của bạn đã chặn hết các miền của web rồi~";
+            block.appendChild(h4);
+            document.body.appendChild(block);
+        }
+        function portal(host){
+            var path = location.pathname || location.path;
+            if((path != "/" && path != "") || window.isautowarp){
+                location.href = host + path;
+            }
+        }
+        function autowarp(){
+            window.isautowarp = true;
+            warpNext();
+        }
+        var pathorg = location.pathname || location.path;
+        if(path != "/" && path != ""){
+            autowarp();
+        }
+    </script>
+        <div>
+            <div class="block">
+                <h4>sangtacviet.com</h4>
+                <button onclick="goto()">GO</button>
+            </div>
+            <div class="block">
+                <h4>sangtacviet.pro</h4>
+                <button onclick="goto()">GO</button>
+            </div>
         </div>
-        <div class="block">
-            <h4>sangtacviet.pro</h4>
-            <button onclick="goto()">GO</button>
-        </div>
-    </div>
-    <br><br>
-    <center>
-        <button onclick="autowarp()">Bỏ qua</button>
-    </center>
-
-</body>
+        <br><br>
+        <center>
+            <button onclick="autowarp()">Bỏ qua</button>
+        </center>
+    
+    </body>
