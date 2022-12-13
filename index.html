@@ -110,7 +110,8 @@
             document.body.appendChild(block);
         }
         function portal(host){
-            var path = location.pathname || location.path;
+            var path = location.pathname || location.path || location.hash;
+            path = path.replace("#", "");
             if((path != "/" && path != "") || window.isAutoWarp){
                 location.href = host + path;
             }else{
@@ -121,8 +122,9 @@
             window.isAutoWarp = true;
             warpNext();
         }
-        var pathorg = location.pathname || location.path;
+        var pathorg = location.pathname || location.path|| location.hash;
         if(pathorg != "/" && pathorg != ""){
+            pathorg = pathorg.replace("#", "");
             window.isDelay = true;
         }
         window.isAutoWarp = true;
