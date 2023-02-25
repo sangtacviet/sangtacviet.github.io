@@ -14,6 +14,11 @@
     "asset/app.v2.read.js",
     "asset/app.v2.surf.trans.js",
     "asset/app.v2.config.js",
-    "asset/app.v2.crawler.js"
+    "asset/app.v2.crawler.js",
+    "qtOnline.js",
+    "jqr.js",
+    "bootstrap.min.js",
+    "font/font.css",
+    "hanviet.js"
   ]
 }
