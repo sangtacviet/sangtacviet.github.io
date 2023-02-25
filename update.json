@@ -1,0 +1,19 @@
+{
+  "domain": "https://sangtacviet.com",
+  "files": [
+    "asset/app.v2.js",
+    "index.html",
+    "manifest.json",
+    "stv.tts.js",
+    "stv.ui.js",
+    "stv.webeq.js",
+    "bingtts.js",
+    "asset/app.v2.anima.js",
+    "asset/app.v2.css",
+    "asset/app.v2.db.js",
+    "asset/app.v2.read.js",
+    "asset/app.v2.surf.trans.js",
+    "asset/app.v2.config.js",
+    "asset/app.v2.crawler.js"
+  ]
+}
