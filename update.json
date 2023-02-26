@@ -18,7 +18,15 @@
     "qtOnline.js",
     "jqr.js",
     "bootstrap.min.js",
+    "bootstrap.min.css",
     "font/font.css",
-    "hanviet.js"
+    "hanviet.js",
+    "asset/materialize.icon.css",
+    "webfonts/materialize.woff2",
+    "asset/all.min.css",
+    "webfonts/fa-solid-900.woff2",
+    "webfonts/fa-brands-400.woff2",
+    "webfonts/fa-regular-400.woff2",
+    "materialize.min.css"
   ]
 }
