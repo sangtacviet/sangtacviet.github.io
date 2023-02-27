@@ -1,0 +1,22 @@
+<head>
+    <title>Stv App counter</title>
+</head>
+<body>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145395004-1"></script>
+	<script async onload="sc_online_t(1546820, ' Online', '170ddb');" defer type="text/javascript" src="//widget.supercounters.com/ssl/online_t.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-145395004-1');
+        window.addEventListener("message", function(event) {
+            if (event.data.type == "trackView") {
+                var url = event.data.url;
+                try{
+                    ga('set', 'page', url);
+                    ga('send', 'pageview');
+                }catch(excep){}
+            }
+        }, false );
+    </script>      
+</body>
