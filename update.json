@@ -20,6 +20,7 @@
     "webfonts/fa-solid-900.ttf",
     "webfonts/fa-regular-400.ttf",
     "webfonts/fa-brands-400.ttf",
+    "webfonts/fa-light-300.ttf",
     "qtOnline.js",
     "jqr.js",
     "bootstrap.min.js",
@@ -27,13 +28,7 @@
     "font/font.css",
     "hanviet.js",
     "asset/materialize.icon.css",
-    "webfonts/materialize.woff2",
     "asset/all.min.css",
-    "webfonts/fa-solid-900.woff2",
-    "webfonts/fa-brands-400.woff2",
-    "webfonts/fa-regular-400.woff2",
-    "webfonts/fa-solid-900.woff",
-    "webfonts/fa-regular-400.woff",
     "materialize.min.css"
   ]
 }
