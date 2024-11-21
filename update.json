@@ -32,6 +32,7 @@
     "webfonts/fa-regular-400.woff2",
     "webfonts/fa-solid-900.woff",
     "webfonts/fa-regular-400.woff",
-    "materialize.min.css"
+    "materialize.min.css",
+    "gsap.min.js"
   ]
 }
