@@ -3,6 +3,7 @@
   "files": [
     "asset/app.v2.js",
     "asset/app.v2.bookdisplay.js",
+    "asset/app.v2.chapterdisplay.js",
     "app.v2.php",
     "manifest.json",
     "stv.tts.js",
