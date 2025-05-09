@@ -34,6 +34,10 @@
     "webfonts/fa-solid-900.woff",
     "webfonts/fa-regular-400.woff",
     "materialize.min.css",
-    "gsap.min.js"
+    "gsap.min.js",
+    "stv.host.js",
+    "materialize.min.js",
+    "iro.js",
+    "crypto-js.min.js"
   ]
 }
